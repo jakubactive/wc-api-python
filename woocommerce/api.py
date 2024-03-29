@@ -89,6 +89,9 @@ class API(object):
             data = jsonencode(data, ensure_ascii=False).encode('utf-8')
             headers["content-type"] = "application/json;charset=utf-8"
 
+        if (kwargs.get("headers")):
+            headers.update(kwargs.get("headers"))
+
         return request(
             method=method,
             url=url,
@@ -97,13 +100,12 @@ class API(object):
             params=params,
             data=data,
             timeout=self.timeout,
-            headers=headers,
-            **kwargs
+            headers=headers
         )
 
-    def get(self, endpoint, **kwargs):
+    def get(self, endpoint, data = None, **kwargs):
         """ Get requests """
-        return self.__request("GET", endpoint, None, **kwargs)
+        return self.__request("GET", endpoint, data, **kwargs)
 
     def post(self, endpoint, data, **kwargs):
         """ POST requests """
